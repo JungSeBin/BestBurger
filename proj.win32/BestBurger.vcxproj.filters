@@ -20,6 +20,7 @@
       <Filter>win32</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\DBManager.cpp" />
+    <ClCompile Include="..\Classes\SelectPreferenceScene.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -30,6 +31,7 @@
       <Filter>win32</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\DBManager.h" />
+    <ClInclude Include="..\Classes\SelectPreferenceScene.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="game.rc">
