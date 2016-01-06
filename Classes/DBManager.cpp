@@ -90,13 +90,13 @@ SQLRETURN DBManager::DBExcuteSQL()
     SQLRETURN ret = SQL_SUCCESS;
 
     int id;
-    char name[50], trackName[100];
-    SQLLEN iID, iName, iTrackName;
+    char name[50];
+    SQLLEN iID, iName;
 
     ////테이블 검색으로 받을 자료에 대한 선언
 
     //테이블 검색
-    ret = SQLExecDirect(_HStmt, (SQLWCHAR*)L"SELECT id, title FROM book_inventory", SQL_NTS);
+    ret = SQLExecDirect(_HStmt, (SQLWCHAR*)L"SELECT id, name FROM burger", SQL_NTS);
 
     if (!ErrorHandling(ret, "SELECT Error!!"))
     {
@@ -104,11 +104,11 @@ SQLRETURN DBManager::DBExcuteSQL()
     }
 
     //Select한 데이터 출력
-    wprintf(L"Track\t ID\t Name\n");
+    wprintf(L"ID\t name\n");
     while (SQLFetch(_HStmt) != SQL_NO_DATA)
     {
         SQLGetData(_HStmt, 1, SQL_C_ULONG, &id, 0, &iID);
-        SQLGetData(_HStmt, 2, SQL_C_WCHAR, trackName, 50, &iTrackName);
+        SQLGetData(_HStmt, 2, SQL_C_WCHAR, name, 50, &iName);
     }
 
     if (_HStmt) SQLCloseCursor(_HStmt);

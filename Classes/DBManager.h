@@ -30,7 +30,7 @@ private:
     SQLHDBC _HDbc;
     SQLHSTMT _HStmt;
 
-    SQLWCHAR* _ODBC_Name = (SQLWCHAR*)L"burger";
+    SQLWCHAR* _ODBC_Name = (SQLWCHAR*)L"burgerDB";
     SQLWCHAR* _ODBC_ID = (SQLWCHAR*)L"user";
     SQLWCHAR* _ODBC_PW = (SQLWCHAR*)L"burger123";
 };
