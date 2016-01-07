@@ -85,6 +85,8 @@ void DBManager::DBDisConnect()
     if (_HDbc) SQLDisconnect(_HDbc);
     if (_HDbc) SQLFreeHandle(SQL_HANDLE_DBC, _HDbc);
     if (_HEnv) SQLFreeHandle(SQL_HANDLE_ENV, _HEnv);
+
+    _BurgerMap.clear();
 }
 
 SQLRETURN DBManager::DBExcuteSQL()
@@ -109,9 +111,9 @@ SQLRETURN DBManager::DBExcuteSQL()
     wprintf(L"ID\t name\n");
     while (SQLFetch(_HStmt) != SQL_NO_DATA)
     {
-        name = (SQLWCHAR*)malloc(sizeof(SQLWCHAR)* 50);
+        name = (SQLWCHAR*)malloc(sizeof(SQLWCHAR) * 60);
         SQLGetData(_HStmt, 1, SQL_C_ULONG, &id, 0, &iID);
-        SQLGetData(_HStmt, 2, SQL_C_WCHAR, name, 50, &iName);
+        SQLGetData(_HStmt, 2, SQL_C_WCHAR, name, 60, &iName);
 
         _BurgerMap.insert(std::make_pair(id, name));
     }

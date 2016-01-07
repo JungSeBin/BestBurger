@@ -62,7 +62,7 @@ void HelloWorld::menuCloseCallback(Ref* pSender)
     return;
 #endif
     DBManager::getInstance().Excute();
-    Director::getInstance()->replaceScene(SelectPreference::createScene());
+    Director::getInstance()->end();
 
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
     exit(0);
