@@ -1,6 +1,9 @@
 #pragma once
 
 #include <windows.h>
+#include <iostream>
+#include <map>
+
 #include "sql.h"
 #include "sqlext.h"
 
@@ -30,7 +33,9 @@ private:
     SQLHDBC _HDbc;
     SQLHSTMT _HStmt;
 
-    SQLWCHAR* _ODBC_Name = (SQLWCHAR*)L"burgerDB";
-    SQLWCHAR* _ODBC_ID = (SQLWCHAR*)L"user";
-    SQLWCHAR* _ODBC_PW = (SQLWCHAR*)L"burger123";
+    SQLWCHAR* _ODBC_Name;
+    SQLWCHAR* _ODBC_ID;
+    SQLWCHAR* _ODBC_PW;
+
+    std::map<int, SQLWCHAR*> _BurgerMap;
 };

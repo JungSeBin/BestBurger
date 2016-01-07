@@ -1,7 +1,7 @@
 #include "DBManager.h"
 #include <stdio.h>
 #include <tchar.h>
-#include <iostream>
+#include <vector>
 #include <stdlib.h>
 #include <time.h>
 
@@ -20,22 +20,24 @@ DBManager::~DBManager()
 
 void DBManager::Connect()
 {
+    _ODBC_Name = (SQLWCHAR*)L"burgerDB";
+    _ODBC_ID = (SQLWCHAR*)L"user";
+    _ODBC_PW = (SQLWCHAR*)L"burger123";
+
     if (!ErrorHandling(DBConnect(), "DBConnect Error!!"))
     {
-        std::cout << "DBConnect Error" << std::endl;
         DBDisConnect();
-        return ;
     }
+    return;
 }
 
 void DBManager::Excute()
 {
     if (!ErrorHandling(DBExcuteSQL(), "DBExcuteSQL Error!!"))
     {
-        std::cout << "DBExcuteQuery Error" << std::endl;
         DBDisConnect();
-        return ;
     }
+    return;
 }
 
 // ODBC사용 핸들 할당 및 SQL연결
@@ -89,8 +91,8 @@ SQLRETURN DBManager::DBExcuteSQL()
 {
     SQLRETURN ret = SQL_SUCCESS;
 
-    int id;
-    char name[50];
+    unsigned int id;
+    SQLWCHAR* name;
     SQLLEN iID, iName;
 
     ////테이블 검색으로 받을 자료에 대한 선언
@@ -107,8 +109,11 @@ SQLRETURN DBManager::DBExcuteSQL()
     wprintf(L"ID\t name\n");
     while (SQLFetch(_HStmt) != SQL_NO_DATA)
     {
+        name = (SQLWCHAR*)malloc(sizeof(SQLWCHAR)* 50);
         SQLGetData(_HStmt, 1, SQL_C_ULONG, &id, 0, &iID);
         SQLGetData(_HStmt, 2, SQL_C_WCHAR, name, 50, &iName);
+
+        _BurgerMap.insert(std::make_pair(id, name));
     }
 
     if (_HStmt) SQLCloseCursor(_HStmt);
