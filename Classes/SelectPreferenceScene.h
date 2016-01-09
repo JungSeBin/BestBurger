@@ -4,16 +4,16 @@
 //#include "Common.h"
 #include "cocos2d.h"
 
-class SelectPreference : public cocos2d::Layer
+class SelectPreferenceScene : public cocos2d::Layer
 {
 public:
     static cocos2d::Scene* createScene();
 
     virtual bool init();
 
-    void menuCloseCallback(cocos2d::Ref* pSender);
+    void menuCallback(cocos2d::Ref* pSender);
 
-    CREATE_FUNC(SelectPreference);
+    CREATE_FUNC(SelectPreferenceScene);
 
     //virtual void editBoxEditingDidBegin(EditBox* editBox);
     //virtual void editBoxEditingDidEnd(EditBox* editBox);

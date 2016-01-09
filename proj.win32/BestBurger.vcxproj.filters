@@ -10,6 +10,9 @@
     <Filter Include="src">
       <UniqueIdentifier>{bb6c862e-70e9-49d9-81b7-3829a6f50471}</UniqueIdentifier>
     </Filter>
+    <Filter Include="win32\SelectPreference">
+      <UniqueIdentifier>{db5d7c35-a62a-44e8-92f4-276dd0144a45}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -20,7 +23,18 @@
       <Filter>win32</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\DBManager.cpp" />
-    <ClCompile Include="..\Classes\SelectPreferenceScene.cpp" />
+    <ClCompile Include="..\Classes\SelectPreferenceScene.cpp">
+      <Filter>win32\SelectPreference</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\IngerdientLayer.cpp">
+      <Filter>win32\SelectPreference</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\SauceLayer.cpp">
+      <Filter>win32\SelectPreference</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\TasteLayer.cpp">
+      <Filter>win32\SelectPreference</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -31,7 +45,18 @@
       <Filter>win32</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\DBManager.h" />
-    <ClInclude Include="..\Classes\SelectPreferenceScene.h" />
+    <ClInclude Include="..\Classes\SelectPreferenceScene.h">
+      <Filter>win32\SelectPreference</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\IngerdientLayer.h">
+      <Filter>win32\SelectPreference</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\SauceLayer.h">
+      <Filter>win32\SelectPreference</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\TasteLayer.h">
+      <Filter>win32\SelectPreference</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="game.rc">

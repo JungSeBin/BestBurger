@@ -84,7 +84,7 @@ void DBManager::DBDisConnect()
     _BurgerMap.clear();
 }
 
-SQLRETURN DBManager::GetDataFromDB(TableType tbType)
+SQLRETURN DBManager::GetDataFromTable(TableType tbType)
 {
     SQLRETURN ret = SQL_SUCCESS;
 
@@ -123,9 +123,9 @@ SQLRETURN DBManager::GetDataFromDB(TableType tbType)
 
         while (SQLFetch(_HStmt) != SQL_NO_DATA)
         {
-            name = (SQLWCHAR*)malloc(sizeof(SQLWCHAR)* 60);
+            name = (SQLWCHAR*)malloc(sizeof(SQLWCHAR)* 50);
             SQLGetData(_HStmt, 1, SQL_C_ULONG, &id, 0, &iID);
-            SQLGetData(_HStmt, 2, SQL_C_WCHAR, name, 60, &iName);
+            SQLGetData(_HStmt, 2, SQL_C_WCHAR, name, 50, &iName);
 
             _IngredientMap.insert(std::make_pair(id, name));
         }
@@ -140,9 +140,9 @@ SQLRETURN DBManager::GetDataFromDB(TableType tbType)
 
         while (SQLFetch(_HStmt) != SQL_NO_DATA)
         {
-            name = (SQLWCHAR*)malloc(sizeof(SQLWCHAR)* 60);
+            name = (SQLWCHAR*)malloc(sizeof(SQLWCHAR)* 50);
             SQLGetData(_HStmt, 1, SQL_C_ULONG, &id, 0, &iID);
-            SQLGetData(_HStmt, 2, SQL_C_WCHAR, name, 60, &iName);
+            SQLGetData(_HStmt, 2, SQL_C_WCHAR, name, 50, &iName);
 
             _SauceMap.insert(std::make_pair(id, name));
         }
@@ -157,9 +157,9 @@ SQLRETURN DBManager::GetDataFromDB(TableType tbType)
 
         while (SQLFetch(_HStmt) != SQL_NO_DATA)
         {
-            name = (SQLWCHAR*)malloc(sizeof(SQLWCHAR)* 60);
+            name = (SQLWCHAR*)malloc(sizeof(SQLWCHAR)* 50);
             SQLGetData(_HStmt, 1, SQL_C_ULONG, &id, 0, &iID);
-            SQLGetData(_HStmt, 2, SQL_C_WCHAR, name, 60, &iName);
+            SQLGetData(_HStmt, 2, SQL_C_WCHAR, name, 50, &iName);
 
             _TasteMap.insert(std::make_pair(id, name));
         }
@@ -167,8 +167,6 @@ SQLRETURN DBManager::GetDataFromDB(TableType tbType)
     default:
         break;
     }
-
-
 
     if (_HStmt) SQLCloseCursor(_HStmt);
 
@@ -187,5 +185,32 @@ bool DBManager::ErrorHandling(SQLRETURN ret, char* msg)
         sprintf_s(error, "%s error No: %d\n", msg, GetLastError());
         fputs(error, stderr);
         return false;
+    }
+}
+
+void DBManager::GetDataFromDB()
+{
+    GetDataFromTable(TABLE_BURGER);
+    GetDataFromTable(TABLE_INGREDIENT);
+    GetDataFromTable(TABLE_SAUCE);
+    GetDataFromTable(TABLE_TASTE);
+}
+
+const DBMapType& DBManager::GetTableMap(TableType tbType) const
+{
+    switch (tbType)
+    {
+    case TABLE_NONE:
+        break;
+    case TABLE_BURGER:
+        return _BurgerMap;
+    case TABLE_INGREDIENT:
+        return _IngredientMap;
+    case TABLE_SAUCE:
+        return _SauceMap;
+    case TABLE_TASTE:
+        return _TasteMap;
+    default:
+        break;
     }
 }

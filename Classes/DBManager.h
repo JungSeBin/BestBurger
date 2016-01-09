@@ -16,6 +16,8 @@ enum TableType
     TABLE_TASTE
 };
 
+typedef std::map<int, SQLWCHAR*> DBMapType;
+
 class DBManager
 {
 public:
@@ -26,9 +28,12 @@ public:
     void Connect();
     SQLRETURN DBConnect();
     void Excute();
-    SQLRETURN GetDataFromDB(TableType tbType);
+    void GetDataFromDB();
+    SQLRETURN GetDataFromTable(TableType tbType);
     void DBDisConnect();
     bool ErrorHandling(SQLRETURN ret, char* msg);
+
+    const DBMapType& GetTableMap(TableType tbType) const;
 
     static DBManager& getInstance()
     {
@@ -46,8 +51,8 @@ private:
     SQLWCHAR* _ODBC_ID;
     SQLWCHAR* _ODBC_PW;
 
-    std::map<int, SQLWCHAR*> _BurgerMap;
-    std::map<int, SQLWCHAR*> _IngredientMap;
-    std::map<int, SQLWCHAR*> _SauceMap;
-    std::map<int, SQLWCHAR*> _TasteMap;
+    DBMapType _BurgerMap;
+    DBMapType _IngredientMap;
+    DBMapType _SauceMap;
+    DBMapType _TasteMap;
 };
