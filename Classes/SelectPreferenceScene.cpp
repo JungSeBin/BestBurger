@@ -1,3 +1,4 @@
+#pragma once
 #include "SelectPreferenceScene.h"
 #include "IngerdientLayer.h"
 #include "SauceLayer.h"
@@ -35,23 +36,74 @@ bool SelectPreferenceScene::init()
     auto tasteLayer = TasteLayer::create();
     this->addChild(tasteLayer, 1, "tasteLayer");
 
-    auto closeItem = MenuItemImage::create(
-        "CloseNormal.png",
-        "CloseSelected.png",
-        CC_CALLBACK_1(SelectPreferenceScene::menuCallback, this));
+    auto item1 = MenuItemImage::create("ingredient_unselected.png", "ingredient_unselected.png");
+    auto item2 = MenuItemImage::create("ingredient_selected.png", "ingredient_selected.png");
+    auto itemToggle1 = MenuItemToggle::createWithCallback(
+        CC_CALLBACK_1(SelectPreferenceScene::menuCallback, this),
+        item1, item2, NULL);
+    //this->addChild(itemToggle1, 1, "ingredientButton");
+    itemToggle1->setName("ingredientButton");
 
-    closeItem->setPosition(Vec2(origin.x + visibleSize.width - closeItem->getContentSize().width / 2,
-        origin.y + closeItem->getContentSize().height / 2));
+    auto item3 = MenuItemImage::create("sauce_unselected.png", "sauce_unselected.png");
+    auto item4 = MenuItemImage::create("sauce_selected.png", "sauce_selected.png");
+    auto itemToggle2 = MenuItemToggle::createWithCallback(
+        CC_CALLBACK_1(SelectPreferenceScene::menuCallback, this),
+        item3, item4, NULL);
+    //this->addChild(itemToggle2, 1, "sauceButton");
+    itemToggle2->setName("sauceButton");
 
-    auto menu = Menu::create(closeItem, NULL);
-    menu->setPosition(Vec2::ZERO);
-    this->addChild(menu, 1000);
+    auto item5 = MenuItemImage::create("taste_unselected.png", "taste_unselected.png");
+    auto item6 = MenuItemImage::create("taste_selected.png", "taste_selected.png");
+    auto itemToggle3 = MenuItemToggle::createWithCallback(
+        CC_CALLBACK_1(SelectPreferenceScene::menuCallback, this),
+        item5, item6, NULL);
+    //this->addChild(itemToggle3, 1, "tasteButton");
+    itemToggle3->setName("tasteButton");
+
+    auto menu = Menu::create(itemToggle1, itemToggle2, itemToggle3, NULL);
+    menu->alignItemsHorizontallyWithPadding(50.0f);
+    menu->setPosition(Vec2(200.0f, 590.0f));
+    this->addChild(menu, 1000, "menu");
 
     return true;
 }
 
-void SelectPreferenceScene::menuCallback(cocos2d::Ref* pSender)
+void SelectPreferenceScene::menuCallback(cocos2d::Object* pSender)
 {
-    this->getChildByName("sauceLayer")->setZOrder(100);
-    this->getChildByName("ingredientLayer")->setZOrder(1);
+    MenuItemToggle* selectedItem = (MenuItemToggle*)pSender;
+    MenuItemToggle* anotherItem1;
+    MenuItemToggle* anotherItem2;
+
+    auto menu = this->getChildByName("menu");
+
+    auto button = selectedItem->getName();
+
+    if (button == "ingredientButton")
+    {
+        anotherItem1 = (MenuItemToggle*)menu->getChildByName("sauceButton");
+        anotherItem2 = (MenuItemToggle*)menu->getChildByName("tasteButton");
+        this->getChildByName("ingredientLayer")->setZOrder(100);
+        this->getChildByName("sauceLayer")->setZOrder(0);
+        this->getChildByName("tasteLayer")->setZOrder(0);
+    }
+    else if (button == "sauceButton")
+    {
+        anotherItem1 = (MenuItemToggle*)menu->getChildByName("ingredientButton");
+        anotherItem2 = (MenuItemToggle*)menu->getChildByName("tasteButton");
+        this->getChildByName("ingredientLayer")->setZOrder(0);
+        this->getChildByName("sauceLayer")->setZOrder(100);
+        this->getChildByName("tasteLayer")->setZOrder(0);
+    }
+    else
+    {
+        anotherItem1 = (MenuItemToggle*)menu->getChildByName("ingredientButton");
+        anotherItem2 = (MenuItemToggle*)menu->getChildByName("sauceButton");
+        this->getChildByName("ingredientLayer")->setZOrder(0);
+        this->getChildByName("sauceLayer")->setZOrder(0);
+        this->getChildByName("tasteLayer")->setZOrder(100);
+    }
+
+    selectedItem->setSelectedIndex(1);
+    anotherItem1->setSelectedIndex(0);
+    anotherItem2->setSelectedIndex(0);
 }

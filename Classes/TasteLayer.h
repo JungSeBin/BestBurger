@@ -11,5 +11,9 @@ public:
     CREATE_FUNC(TasteLayer);
 
     void PrintTastes();
+    void menuCallback(cocos2d::Object* sender);
+
+private:
+    std::vector<int> _SelectedIDVec;
 };
 #endif
