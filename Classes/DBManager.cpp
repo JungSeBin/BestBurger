@@ -33,11 +33,6 @@ void DBManager::Connect()
 
 void DBManager::Excute()
 {
-    if (!ErrorHandling(DBExcuteSQL(), "DBExcuteSQL Error!!"))
-    {
-        DBDisConnect();
-    }
-    return;
 }
 
 // ODBC사용 핸들 할당 및 SQL연결
@@ -89,7 +84,7 @@ void DBManager::DBDisConnect()
     _BurgerMap.clear();
 }
 
-SQLRETURN DBManager::DBExcuteSQL()
+SQLRETURN DBManager::GetDataFromDB(TableType tbType)
 {
     SQLRETURN ret = SQL_SUCCESS;
 
@@ -97,26 +92,83 @@ SQLRETURN DBManager::DBExcuteSQL()
     SQLWCHAR* name;
     SQLLEN iID, iName;
 
-    ////테이블 검색으로 받을 자료에 대한 선언
-
-    //테이블 검색
-    ret = SQLExecDirect(_HStmt, (SQLWCHAR*)L"SELECT id, name FROM burger", SQL_NTS);
-
-    if (!ErrorHandling(ret, "SELECT Error!!"))
+    switch (tbType)
     {
-        return ret;
+    case TABLE_NONE:
+        break;
+    case TABLE_BURGER:
+        ret = SQLExecDirect(_HStmt, (SQLWCHAR*)L"SELECT id, name FROM burger", SQL_NTS);
+
+        if (!ErrorHandling(ret, "SELECT Error!!"))
+        {
+            return ret;
+        }
+
+        while (SQLFetch(_HStmt) != SQL_NO_DATA)
+        {
+            name = (SQLWCHAR*)malloc(sizeof(SQLWCHAR)* 60);
+            SQLGetData(_HStmt, 1, SQL_C_ULONG, &id, 0, &iID);
+            SQLGetData(_HStmt, 2, SQL_C_WCHAR, name, 60, &iName);
+
+            _BurgerMap.insert(std::make_pair(id, name));
+        }
+        break;
+    case TABLE_INGREDIENT:
+        ret = SQLExecDirect(_HStmt, (SQLWCHAR*)L"SELECT id, name FROM ingredient", SQL_NTS);
+
+        if (!ErrorHandling(ret, "SELECT Error!!"))
+        {
+            return ret;
+        }
+
+        while (SQLFetch(_HStmt) != SQL_NO_DATA)
+        {
+            name = (SQLWCHAR*)malloc(sizeof(SQLWCHAR)* 60);
+            SQLGetData(_HStmt, 1, SQL_C_ULONG, &id, 0, &iID);
+            SQLGetData(_HStmt, 2, SQL_C_WCHAR, name, 60, &iName);
+
+            _IngredientMap.insert(std::make_pair(id, name));
+        }
+        break;
+    case TABLE_SAUCE:
+        ret = SQLExecDirect(_HStmt, (SQLWCHAR*)L"SELECT id, name FROM sauce", SQL_NTS);
+
+        if (!ErrorHandling(ret, "SELECT Error!!"))
+        {
+            return ret;
+        }
+
+        while (SQLFetch(_HStmt) != SQL_NO_DATA)
+        {
+            name = (SQLWCHAR*)malloc(sizeof(SQLWCHAR)* 60);
+            SQLGetData(_HStmt, 1, SQL_C_ULONG, &id, 0, &iID);
+            SQLGetData(_HStmt, 2, SQL_C_WCHAR, name, 60, &iName);
+
+            _SauceMap.insert(std::make_pair(id, name));
+        }
+        break;
+    case TABLE_TASTE:
+        ret = SQLExecDirect(_HStmt, (SQLWCHAR*)L"SELECT id, name FROM taste", SQL_NTS);
+
+        if (!ErrorHandling(ret, "SELECT Error!!"))
+        {
+            return ret;
+        }
+
+        while (SQLFetch(_HStmt) != SQL_NO_DATA)
+        {
+            name = (SQLWCHAR*)malloc(sizeof(SQLWCHAR)* 60);
+            SQLGetData(_HStmt, 1, SQL_C_ULONG, &id, 0, &iID);
+            SQLGetData(_HStmt, 2, SQL_C_WCHAR, name, 60, &iName);
+
+            _TasteMap.insert(std::make_pair(id, name));
+        }
+        break;
+    default:
+        break;
     }
 
-    //Select한 데이터 출력
-    wprintf(L"ID\t name\n");
-    while (SQLFetch(_HStmt) != SQL_NO_DATA)
-    {
-        name = (SQLWCHAR*)malloc(sizeof(SQLWCHAR) * 60);
-        SQLGetData(_HStmt, 1, SQL_C_ULONG, &id, 0, &iID);
-        SQLGetData(_HStmt, 2, SQL_C_WCHAR, name, 60, &iName);
 
-        _BurgerMap.insert(std::make_pair(id, name));
-    }
 
     if (_HStmt) SQLCloseCursor(_HStmt);
 

@@ -7,6 +7,15 @@
 #include "sql.h"
 #include "sqlext.h"
 
+enum TableType
+{
+    TABLE_NONE,
+    TABLE_BURGER,
+    TABLE_INGREDIENT,
+    TABLE_SAUCE,
+    TABLE_TASTE
+};
+
 class DBManager
 {
 public:
@@ -17,7 +26,7 @@ public:
     void Connect();
     SQLRETURN DBConnect();
     void Excute();
-    SQLRETURN DBExcuteSQL();
+    SQLRETURN GetDataFromDB(TableType tbType);
     void DBDisConnect();
     bool ErrorHandling(SQLRETURN ret, char* msg);
 
@@ -38,4 +47,7 @@ private:
     SQLWCHAR* _ODBC_PW;
 
     std::map<int, SQLWCHAR*> _BurgerMap;
+    std::map<int, SQLWCHAR*> _IngredientMap;
+    std::map<int, SQLWCHAR*> _SauceMap;
+    std::map<int, SQLWCHAR*> _TasteMap;
 };
