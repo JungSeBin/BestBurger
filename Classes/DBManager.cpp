@@ -28,11 +28,21 @@ void DBManager::Connect()
     {
         DBDisConnect();
     }
-    return;
 }
 
-void DBManager::Excute()
+SQLRETURN DBManager::Excute(SQLWCHAR* query)
 {
+    SQLRETURN ret = SQL_SUCCESS;
+
+    ret = SQLExecDirect(_HStmt, query, SQL_NTS);
+    if (!ErrorHandling(ret, "Excute Query"))
+    {
+        return ret;
+    }
+
+    if (_HStmt) SQLCloseCursor(_HStmt);
+
+    return ret;
 }
 
 // ODBC사용 핸들 할당 및 SQL연결
@@ -213,4 +223,23 @@ const DBMapType& DBManager::GetTableMap(TableType tbType) const
     default:
         break;
     }
+}
+
+void DBManager::InsertUserNameToDB(std::wstring name)
+{
+    _UserName = name;
+    std::wstring query = L"INSERT INTO users_info(name) VALUE('";
+    query += name + L"')";
+    Excute((SQLWCHAR*)query.c_str());
+}
+
+void DBManager::SelectUserIDFromDB()
+{
+    unsigned int id;
+    SQLLEN iID;
+    std::wstring query = L"SELECT MAX(id) FROM users_info WHERE name = ";
+    query += _UserName;
+    SQLExecDirect(_HStmt, (SQLWCHAR*)query.c_str(), SQL_NTS);
+
+    SQLGetData(_HStmt, 1, SQL_C_ULONG, &id, 0, &iID);
 }

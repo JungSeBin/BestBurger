@@ -35,6 +35,15 @@
     <ClCompile Include="..\Classes\TasteLayer.cpp">
       <Filter>win32\SelectPreference</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\InputBox.cpp">
+      <Filter>win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\LoginScene.cpp">
+      <Filter>win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\ConvertUTF.cpp">
+      <Filter>win32</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -56,6 +65,15 @@
     </ClInclude>
     <ClInclude Include="..\Classes\TasteLayer.h">
       <Filter>win32\SelectPreference</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\InputBox.h">
+      <Filter>win32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\LoginScene.h">
+      <Filter>win32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\ConvertUTF.h">
+      <Filter>win32</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

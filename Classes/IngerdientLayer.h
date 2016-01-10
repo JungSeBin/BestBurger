@@ -15,6 +15,7 @@ public:
     void menuCallback(cocos2d::Object* sender);
 
     void PrintIngredients();
+    void InsertDataToDB();
 
 private:
     std::vector<int> _selectedIDVec;

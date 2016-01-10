@@ -11,6 +11,8 @@ public:
     virtual bool init();
 
     void menuCallback(cocos2d::Object* pSender);
+    void menuCallback2();
+
 
     CREATE_FUNC(SelectPreferenceScene);
 };

@@ -25,21 +25,26 @@ public:
     ~DBManager();
 
 public:
-    void Connect();
-    SQLRETURN DBConnect();
-    void Excute();
-    void GetDataFromDB();
-    SQLRETURN GetDataFromTable(TableType tbType);
-    void DBDisConnect();
-    bool ErrorHandling(SQLRETURN ret, char* msg);
-
-    const DBMapType& GetTableMap(TableType tbType) const;
 
     static DBManager& getInstance()
     {
         static DBManager instance;
         return instance;
     }
+
+    void        Connect();
+    SQLRETURN   DBConnect();
+    void        DBDisConnect();
+    bool        ErrorHandling(SQLRETURN ret, char* msg);
+    SQLRETURN   Excute(SQLWCHAR* query);
+
+    void        GetDataFromDB();
+    SQLRETURN   GetDataFromTable(TableType tbType);
+    void        InsertUserNameToDB(std::wstring name);
+    void        SelectUserIDFromDB();;
+    int         GetUserID(){ return _UserID; }
+
+    const DBMapType& GetTableMap(TableType tbType) const;
 
 private:
 
@@ -55,4 +60,7 @@ private:
     DBMapType _IngredientMap;
     DBMapType _SauceMap;
     DBMapType _TasteMap;
+
+    unsigned int             _UserID;
+    std::wstring    _UserName;
 };

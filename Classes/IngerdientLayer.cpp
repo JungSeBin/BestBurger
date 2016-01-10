@@ -1,5 +1,7 @@
 #include "IngerdientLayer.h"
 #include "DBManager.h"
+#include <stdio.h>
+#include <string>
 
 static const int unSelected = 0;
 static const int selected = 1;
@@ -96,5 +98,16 @@ void IngredientLayer::menuCallback(cocos2d::Object* sender)
         {
             _selectedIDVec.erase(selectedID);
         }
+    }
+}
+
+void IngredientLayer::InsertDataToDB()
+{
+    std::wstring wstr = L"INSERT INTO burgeringredient VALUES(";
+    for (auto& ingredientID : _selectedIDVec)
+    {
+        wstr += std::to_wstring(DBManager::getInstance().GetUserID()) + L",";
+        wstr += std::to_wstring(ingredientID) + L")";
+        DBManager::getInstance().Excute((SQLWCHAR*)wstr.c_str());
     }
 }

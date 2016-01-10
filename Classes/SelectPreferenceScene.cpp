@@ -27,6 +27,7 @@ bool SelectPreferenceScene::init()
     Size visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
+    // layer생성
     auto ingredientLayer = IngredientLayer::create();
     this->addChild(ingredientLayer, 100, "ingredientLayer");
 
@@ -36,12 +37,12 @@ bool SelectPreferenceScene::init()
     auto tasteLayer = TasteLayer::create();
     this->addChild(tasteLayer, 1, "tasteLayer");
 
+    //layer를 선택할 button생성
     auto item1 = MenuItemImage::create("ingredient_unselected.png", "ingredient_unselected.png");
     auto item2 = MenuItemImage::create("ingredient_selected.png", "ingredient_selected.png");
     auto itemToggle1 = MenuItemToggle::createWithCallback(
         CC_CALLBACK_1(SelectPreferenceScene::menuCallback, this),
         item1, item2, NULL);
-    //this->addChild(itemToggle1, 1, "ingredientButton");
     itemToggle1->setName("ingredientButton");
 
     auto item3 = MenuItemImage::create("sauce_unselected.png", "sauce_unselected.png");
@@ -49,7 +50,6 @@ bool SelectPreferenceScene::init()
     auto itemToggle2 = MenuItemToggle::createWithCallback(
         CC_CALLBACK_1(SelectPreferenceScene::menuCallback, this),
         item3, item4, NULL);
-    //this->addChild(itemToggle2, 1, "sauceButton");
     itemToggle2->setName("sauceButton");
 
     auto item5 = MenuItemImage::create("taste_unselected.png", "taste_unselected.png");
@@ -57,7 +57,6 @@ bool SelectPreferenceScene::init()
     auto itemToggle3 = MenuItemToggle::createWithCallback(
         CC_CALLBACK_1(SelectPreferenceScene::menuCallback, this),
         item5, item6, NULL);
-    //this->addChild(itemToggle3, 1, "tasteButton");
     itemToggle3->setName("tasteButton");
 
     auto menu = Menu::create(itemToggle1, itemToggle2, itemToggle3, NULL);
@@ -75,10 +74,11 @@ void SelectPreferenceScene::menuCallback(cocos2d::Object* pSender)
     MenuItemToggle* anotherItem2;
 
     auto menu = this->getChildByName("menu");
+    auto buttonName = selectedItem->getName();
 
-    auto button = selectedItem->getName();
+    IngredientLayer* ingredientLayer = (IngredientLayer*)this->getChildByName("ingredientLayer");
 
-    if (button == "ingredientButton")
+    if (buttonName == "ingredientButton")
     {
         anotherItem1 = (MenuItemToggle*)menu->getChildByName("sauceButton");
         anotherItem2 = (MenuItemToggle*)menu->getChildByName("tasteButton");
@@ -86,13 +86,15 @@ void SelectPreferenceScene::menuCallback(cocos2d::Object* pSender)
         this->getChildByName("sauceLayer")->setZOrder(0);
         this->getChildByName("tasteLayer")->setZOrder(0);
     }
-    else if (button == "sauceButton")
+    else if (buttonName == "sauceButton")
     {
         anotherItem1 = (MenuItemToggle*)menu->getChildByName("ingredientButton");
         anotherItem2 = (MenuItemToggle*)menu->getChildByName("tasteButton");
         this->getChildByName("ingredientLayer")->setZOrder(0);
         this->getChildByName("sauceLayer")->setZOrder(100);
         this->getChildByName("tasteLayer")->setZOrder(0);
+
+        ingredientLayer->InsertDataToDB();
     }
     else
     {
@@ -103,7 +105,13 @@ void SelectPreferenceScene::menuCallback(cocos2d::Object* pSender)
         this->getChildByName("tasteLayer")->setZOrder(100);
     }
 
+    //선택된 item은 선택된 이미지로 출력, 나머지는 unselected
     selectedItem->setSelectedIndex(1);
     anotherItem1->setSelectedIndex(0);
     anotherItem2->setSelectedIndex(0);
+}
+
+void SelectPreferenceScene::menuCallback2()
+{
+
 }
