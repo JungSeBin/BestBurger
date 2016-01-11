@@ -30,6 +30,14 @@ void BurgerInfoLayer::PrintBurgerInfo()
 {
     this->removeAllChildren();
 
+    auto winSize = Director::getInstance()->getWinSize();
+
+    auto background = Sprite::create("background.png");
+    background->setAnchorPoint(Vec2(0.5f, 0.5f));
+    background->setPosition(Vec2(winSize.width / 2, winSize.height / 2));
+    background->setOpacity(50.0f);
+    this->addChild(background, 0);
+
     auto backItem = MenuItemImage::create("backButton.png",
         "backButton_selected.png",
         CC_CALLBACK_1(BurgerInfoLayer::menuCallback1,this));

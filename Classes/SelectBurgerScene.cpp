@@ -22,6 +22,14 @@ bool SelectBurgerScene::init()
         return false;
     }
 
+    auto winSize = Director::getInstance()->getWinSize();
+
+    auto background = Sprite::create("background.png");
+    background->setAnchorPoint(Vec2(0.5f, 0.5f));
+    background->setPosition(Vec2(winSize.width / 2, winSize.height / 2));
+    background->setOpacity(50.0f);
+    this->addChild(background, 0);
+
     PrintSelectedBurger();
 
 
