@@ -13,12 +13,14 @@
     <Filter Include="win32\SelectPreference">
       <UniqueIdentifier>{db5d7c35-a62a-44e8-92f4-276dd0144a45}</UniqueIdentifier>
     </Filter>
+    <Filter Include="win32\SelectBurger">
+      <UniqueIdentifier>{2dbe0159-3e67-4156-82de-932ee5bd77b6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
       <Filter>win32</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\HelloWorldScene.cpp" />
     <ClCompile Include="..\Classes\AppDelegate.cpp">
       <Filter>win32</Filter>
     </ClCompile>
@@ -45,14 +47,16 @@
       <Filter>win32</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\SelectBurgerScene.cpp">
-      <Filter>win32</Filter>
+      <Filter>win32\SelectBurger</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\BurgerInfoLayer.cpp">
+      <Filter>win32\SelectBurger</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
       <Filter>win32</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\HelloWorldScene.h" />
     <ClInclude Include="..\Classes\AppDelegate.h">
       <Filter>win32</Filter>
     </ClInclude>
@@ -79,7 +83,10 @@
       <Filter>win32</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\SelectBurgerScene.h">
-      <Filter>win32</Filter>
+      <Filter>win32\SelectBurger</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\BurgerInfoLayer.h">
+      <Filter>win32\SelectBurger</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

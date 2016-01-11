@@ -27,18 +27,19 @@ bool SelectPreferenceScene::init()
         return false;
     }
 
+    auto winSize = Director::getInstance()->getWinSize();
     Size visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
     // layer생성
     auto ingredientLayer = IngredientLayer::create();
-    this->addChild(ingredientLayer, -1, "ingredientLayer");
+    this->addChild(ingredientLayer, 100, "ingredientLayer");
 
     auto sauceLayer = SauceLayer::create();
-    this->addChild(sauceLayer, -1, "sauceLayer");
+    this->addChild(sauceLayer, 0, "sauceLayer");
 
     auto tasteLayer = TasteLayer::create();
-    this->addChild(tasteLayer, -1, "tasteLayer");
+    this->addChild(tasteLayer, 0, "tasteLayer");
 
     //layer를 선택할 button생성
     auto item1 = MenuItemImage::create("ingredient_unselected.png", "ingredient_unselected.png");
@@ -46,6 +47,7 @@ bool SelectPreferenceScene::init()
     auto itemToggle1 = MenuItemToggle::createWithCallback(
         CC_CALLBACK_1(SelectPreferenceScene::menuCallback, this),
         item1, item2, NULL);
+    itemToggle1->setSelectedIndex(1);
     itemToggle1->setName("ingredientButton");
 
     auto item3 = MenuItemImage::create("sauce_unselected.png", "sauce_unselected.png");
@@ -78,11 +80,11 @@ bool SelectPreferenceScene::init()
     priceMenu1->setPosition(Vec2(800.0f, visibleSize.height / 2));
     this->addChild(priceMenu1, 1000);
 
-    _PriceBox = InputBox::create("최대 가격", "fonts/MarkerFelt.ttf", 9);
+    _PriceBox = InputBox::create("최대 허용 가격입력", "NanumGothic.ttf", 9);
     _PriceBox->setAnchorPoint(Vec2(0.5f, 0.5f));
     _PriceBox->setPosition(Vec2(150.0f, 40.0f));
     _PriceBox->setColor(Color3B::BLACK);
-    _PriceBox->setFontSize(30);
+    _PriceBox->setFontSize(20);
     priceBox->addChild(_PriceBox);
 
     auto kcalBox = MenuItemImage::create(
@@ -95,11 +97,11 @@ bool SelectPreferenceScene::init()
     kcalMenu1->setPosition(Vec2(800.0f, visibleSize.height / 4));
     this->addChild(kcalMenu1, 1000);
 
-    _KcalBox = InputBox::create("최대 Kcal", "fonts/MarkerFelt.ttf", 9);
+    _KcalBox = InputBox::create("최대 허용 Kcal입력", "NanumGothic.ttf", 9);
     _KcalBox->setAnchorPoint(Vec2(0.5f, 0.5f));
     _KcalBox->setPosition(Vec2(150.0f, 40.0f));                               
     _KcalBox->setColor(Color3B::BLACK);
-    _KcalBox->setFontSize(30);
+    _KcalBox->setFontSize(20);
     kcalBox->addChild(_KcalBox);
 
     //선택완료 버튼

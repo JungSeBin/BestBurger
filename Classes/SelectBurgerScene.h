@@ -3,6 +3,7 @@
 
 #include "cocos2d.h"
 
+
 class InputBox;
 class SelectBurgerScene : public cocos2d::LayerColor
 {
@@ -11,9 +12,13 @@ public:
 
     virtual bool init();
 
+    void menuCallback(cocos2d::Object* sender);
     void PrintSelectedBurger();
 
-    CREATE_FUNC(SelectBurgerScene);
+    CREATE_FUNC(SelectBurgerScene); 
+
+private:
+    
 };
 
 #endif

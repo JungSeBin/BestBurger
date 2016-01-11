@@ -29,6 +29,16 @@ bool LoginScene::init()
     }
     auto winSize = Director::getInstance()->getWinSize();
 
+    auto background = Sprite::create("background.png");
+    background->setAnchorPoint(Vec2(0.5f, 0.5f));
+    background->setPosition(Vec2(winSize.width / 2, winSize.height / 2));
+    this->addChild(background);
+
+    auto title = Sprite::create("title.png");
+    title->setAnchorPoint(Vec2(0.5f, 0.5f));
+    title->setPosition(Vec2(winSize.width / 2, 550.0f));
+    this->addChild(title);
+
     auto loginBox = MenuItemImage::create(
         "loginField.png",
         "loginField.png",
@@ -45,7 +55,7 @@ bool LoginScene::init()
         CC_CALLBACK_1(LoginScene::menuCallback2, this));
 
     auto loginMenu2 = Menu::create(loginButton, NULL);
-    loginMenu2->setPosition(Vec2(415, 35));
+    loginMenu2->setPosition(Vec2(150, -150));
     loginBox->addChild(loginMenu2);
 
     _LoginBox = InputBox::create("이름을 입력해주세요", "NanumGothic.ttf", MAX_NAME_LEN);

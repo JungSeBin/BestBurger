@@ -2,6 +2,7 @@
 
 #include <windows.h>
 #include <iostream>
+#include <vector>
 #include <map>
 
 #include "sql.h"
@@ -44,12 +45,16 @@ public:
     void        InsertUserNameToDB(std::wstring name);
     void        SelectUserIDFromDB();
     int         GetUserID(){ return _UserID; }
+    SQLWCHAR*   GetBurgerName(int id);
     void        SelectBurgerByUserInfo();
     void        InsertUserPreference();
-    void        test();
+    int         GetBurgerPrice(int burger_id);
+    int         GetBurgerKcal(int burger_id);
+    void        DecideBurgerToDB(int burger_id);
 
     const       DBMapType& GetTableMap(TableType tbType) const;
     const       std::wstring& GetName() { return _UserName; }
+    const       std::vector<std::string> GetBurgerInfo(int id, TableType tbType);
 
 private:
 

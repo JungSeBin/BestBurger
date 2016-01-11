@@ -13,11 +13,20 @@ bool TasteLayer::init()
         return false;
     }
 
+    auto winSize = Director::getInstance()->getWinSize();
+
+    auto background = Sprite::create("background.png");
+    background->setAnchorPoint(Vec2(0.5f, 0.5f));
+    background->setPosition(Vec2(winSize.width / 2, winSize.height / 2));
+    background->setOpacity(50.0f);
+    this->addChild(background, 0);
+
     auto label = Label::createWithSystemFont("싫어하는 맛을 선택해주십시오.", "NanumGothic.ttf", 50);
     label->setAnchorPoint(Vec2::ZERO);
     label->setHorizontalAlignment(TextHAlignment::CENTER);
-    label->setPosition(Vec2(0.0f, 580.0f));
-    this->addChild(label, 0, "TableLabel");
+    label->setPosition(Vec2(0.0f, 50.0f));
+    label->setColor(Color3B::BLACK);
+    this->addChild(label, 1, "TableLabel");
 
     PrintTastes();
 
@@ -27,7 +36,7 @@ bool TasteLayer::init()
 void TasteLayer::PrintTastes()
 {
     auto tasteMap = DBManager::getInstance().GetTableMap(TABLE_TASTE);
-    auto x = 300.0f;
+    auto x = 200.0f;
     auto y = 490.0f;
     std::wstring wstr;
     std::string str;
@@ -44,7 +53,7 @@ void TasteLayer::PrintTastes()
         label->setHorizontalAlignment(TextHAlignment::CENTER);
         label->setPosition(Vec2(x, y));
         label->setColor(Color3B::BLACK);
-        this->addChild(label, 0);
+        this->addChild(label, 1);
 
         auto selectItem1 = MenuItemImage::create(
             "frame_unselected.png",
@@ -63,16 +72,16 @@ void TasteLayer::PrintTastes()
 
         auto menu = Menu::create(toggle, NULL);
         menu->setPosition(Vec2::ZERO);
-        this->addChild(menu, 1);
+        this->addChild(menu, 2);
 
         //set label coordinate(x,y)
-        if (x == 300.0f)
+        if (x == 200.0f)
         {
             x += 300.0f;
         }
         else
         {
-            x = 300.0f;
+            x = 200.0f;
             y -= 70.0f;
         }
     }

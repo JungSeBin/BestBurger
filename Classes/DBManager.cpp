@@ -22,8 +22,8 @@ DBManager::~DBManager()
 void DBManager::Connect()
 {
     _ODBC_Name = (SQLWCHAR*)L"burgerDB";
-    _ODBC_ID = (SQLWCHAR*)L"root";
-    _ODBC_PW = (SQLWCHAR*)L"TPqls5144";
+    _ODBC_ID = (SQLWCHAR*)L"user";
+    _ODBC_PW = (SQLWCHAR*)L"burger123";
 
     if (!ErrorHandling(DBConnect(), "DBConnect Error!!"))
     {
@@ -275,17 +275,106 @@ void DBManager::SelectBurgerByUserInfo()
 
         _SelectedBurgerMap.insert(std::make_pair(id, name));
     }
-}
-
-void DBManager::test()
-{
-    std::wstring query = L"INSERT INTO users_info(name) VALUE('sebin')";
-    Excute((SQLWCHAR*)query.c_str());
+    if (_HStmt) SQLCloseCursor(_HStmt);
 }
 
 void DBManager::InsertUserPreference()
 {
     std::wstring query = L"INSERT INTO user_preference(user_id) VALUE(";
     query += std::to_wstring(DBManager::getInstance().GetUserID()) + L")";
+    Excute((SQLWCHAR*)query.c_str());
+}
+
+const std::vector<std::string> DBManager::GetBurgerInfo(int burger_id, TableType tbType)
+{
+    std::vector<std::string> burgerInfoVec;
+    std::wstring query = L"SELECT name FROM ";
+    std::wstring info;
+
+    SQLWCHAR* name;
+    SQLLEN iName;
+
+    switch (tbType)
+    {
+    case TABLE_NONE:
+        break;
+    case TABLE_INGREDIENT:
+        query += L"ingredient WHERE id IN (SELECT ingredient_id FROM burgeringredient WHERE burger_id = ";
+        query += std::to_wstring(burger_id) + L")";
+        break;
+    case TABLE_SAUCE:
+        query += L"sauce WHERE id IN (SELECT sauce_id FROM burgersauce WHERE burger_id = ";
+        query += std::to_wstring(burger_id) + L")";
+        break;
+    case TABLE_TASTE:
+        query += L"taste WHERE id IN (SELECT taste_id FROM burgertaste WHERE burger_id = ";
+        query += std::to_wstring(burger_id) + L")";
+        break;
+    default:
+        break;
+    }
+    SQLExecDirect(_HStmt, (SQLWCHAR*)query.c_str(), SQL_NTS);
+
+    while (SQLFetch(_HStmt) != SQL_NO_DATA)
+    {
+        name = (SQLWCHAR*)malloc(sizeof(SQLWCHAR)* 30);
+        SQLGetData(_HStmt, 1, SQL_C_WCHAR, name, 30, &iName);
+
+        info = std::wstring(name);
+
+        burgerInfoVec.push_back(std::string(info.begin(),info.end()));
+    }
+    if (_HStmt) SQLCloseCursor(_HStmt);
+    return burgerInfoVec;
+}
+
+SQLWCHAR* DBManager::GetBurgerName(int id)
+{
+    auto burger = _BurgerMap.find(id);
+    if (burger != _BurgerMap.end())
+    {
+        return burger->second;
+    }
+}
+
+int DBManager::GetBurgerPrice(int burger_id)
+{
+    int price;
+    SQLLEN iPrice;
+
+    std::wstring query = L"SELECT price FROM burger WHERE id = ";
+    query += std::to_wstring(burger_id);
+    SQLExecDirect(_HStmt, (SQLWCHAR*)query.c_str(), SQL_NTS);
+
+    while(SQLFetch(_HStmt) != SQL_NO_DATA)
+    {
+        SQLGetData(_HStmt, 1, SQL_C_ULONG, &price, 0, &iPrice);
+    }
+    if (_HStmt) SQLCloseCursor(_HStmt);
+    return price;
+}
+
+int DBManager::GetBurgerKcal(int burger_id)
+{
+    int kcal;
+    SQLLEN iKcal;
+
+    std::wstring query = L"SELECT kcal FROM burger WHERE id = ";
+    query += std::to_wstring(burger_id);
+    SQLExecDirect(_HStmt, (SQLWCHAR*)query.c_str(), SQL_NTS);
+
+    while (SQLFetch(_HStmt) != SQL_NO_DATA)
+    {
+        SQLGetData(_HStmt, 1, SQL_C_ULONG, &kcal, 0, &iKcal);
+    }
+    if (_HStmt) SQLCloseCursor(_HStmt);
+    return kcal;
+}
+
+void DBManager::DecideBurgerToDB(int burger_id)
+{
+    std::wstring query = L"UPDATE users_info SET selectBurger_id = ";
+    query += std::to_wstring(burger_id) + L" WHERE id = ";
+    query += std::to_wstring(_UserID);
     Excute((SQLWCHAR*)query.c_str());
 }
