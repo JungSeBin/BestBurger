@@ -4,6 +4,7 @@
 #include <vector>
 #include <stdlib.h>
 #include <time.h>
+#include <string>
 
 #pragma warning(disable:4996)
 
@@ -21,8 +22,8 @@ DBManager::~DBManager()
 void DBManager::Connect()
 {
     _ODBC_Name = (SQLWCHAR*)L"burgerDB";
-    _ODBC_ID = (SQLWCHAR*)L"user";
-    _ODBC_PW = (SQLWCHAR*)L"burger123";
+    _ODBC_ID = (SQLWCHAR*)L"root";
+    _ODBC_PW = (SQLWCHAR*)L"TPqls5144";
 
     if (!ErrorHandling(DBConnect(), "DBConnect Error!!"))
     {
@@ -204,6 +205,9 @@ void DBManager::GetDataFromDB()
     GetDataFromTable(TABLE_INGREDIENT);
     GetDataFromTable(TABLE_SAUCE);
     GetDataFromTable(TABLE_TASTE);
+
+    SelectUserIDFromDB();
+    InsertUserPreference();
 }
 
 const DBMapType& DBManager::GetTableMap(TableType tbType) const
@@ -220,6 +224,8 @@ const DBMapType& DBManager::GetTableMap(TableType tbType) const
         return _SauceMap;
     case TABLE_TASTE:
         return _TasteMap;
+    case TABLE_SELECTEDBURGER:
+        return _SelectedBurgerMap;
     default:
         break;
     }
@@ -235,11 +241,51 @@ void DBManager::InsertUserNameToDB(std::wstring name)
 
 void DBManager::SelectUserIDFromDB()
 {
-    unsigned int id;
+    int id;
     SQLLEN iID;
-    std::wstring query = L"SELECT MAX(id) FROM users_info WHERE name = ";
-    query += _UserName;
+    std::wstring query = L"SELECT MAX(id) FROM users_info WHERE name = '";
+    query += _UserName + L"'"; 
     SQLExecDirect(_HStmt, (SQLWCHAR*)query.c_str(), SQL_NTS);
 
-    SQLGetData(_HStmt, 1, SQL_C_ULONG, &id, 0, &iID);
+    if (SQLFetch(_HStmt) != SQL_NO_DATA)
+    {
+        SQLGetData(_HStmt, 1, SQL_C_ULONG, &id, 0, &iID);
+        _UserID = id;
+    }
+
+    if (_HStmt) SQLCloseCursor(_HStmt);
+}
+
+void DBManager::SelectBurgerByUserInfo()
+{
+    unsigned int id;
+    SQLWCHAR* name;
+    SQLLEN iID, iName;
+
+    std::wstring query = L"CALL selectBurgerByUserInfo(";
+    query += std::to_wstring(_UserID) + L")";
+
+    SQLExecDirect(_HStmt, (SQLWCHAR*)query.c_str(), SQL_NTS);
+
+    while (SQLFetch(_HStmt) != SQL_NO_DATA)
+    {
+        name = (SQLWCHAR*)malloc(sizeof(SQLWCHAR)* 60);
+        SQLGetData(_HStmt, 1, SQL_C_ULONG, &id, 0, &iID);
+        SQLGetData(_HStmt, 2, SQL_C_WCHAR, name, 60, &iName);
+
+        _SelectedBurgerMap.insert(std::make_pair(id, name));
+    }
+}
+
+void DBManager::test()
+{
+    std::wstring query = L"INSERT INTO users_info(name) VALUE('sebin')";
+    Excute((SQLWCHAR*)query.c_str());
+}
+
+void DBManager::InsertUserPreference()
+{
+    std::wstring query = L"INSERT INTO user_preference(user_id) VALUE(";
+    query += std::to_wstring(DBManager::getInstance().GetUserID()) + L")";
+    Excute((SQLWCHAR*)query.c_str());
 }

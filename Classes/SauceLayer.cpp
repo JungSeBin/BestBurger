@@ -97,3 +97,16 @@ void SauceLayer::menuCallback(cocos2d::Object* sender)
         }
     }
 }
+
+void SauceLayer::InsertDataToDB()
+{
+    int userID = DBManager::getInstance().GetUserID();
+    std::wstring wstr;
+    for (auto& sauceID : _SelectedIDVec)
+    {
+        wstr = L"INSERT INTO dislikesauce VALUES(";
+        wstr += std::to_wstring(userID) + L",";
+        wstr += std::to_wstring(sauceID) + L")";
+        DBManager::getInstance().Excute((SQLWCHAR*)wstr.c_str());
+    }
+}

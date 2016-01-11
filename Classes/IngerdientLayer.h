@@ -18,6 +18,6 @@ public:
     void InsertDataToDB();
 
 private:
-    std::vector<int> _selectedIDVec;
+    std::vector<int> _SelectedIDVec;
 };
 #endif

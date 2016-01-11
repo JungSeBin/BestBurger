@@ -14,8 +14,7 @@ public:
     void menuCallback(cocos2d::Ref* pSender);
     void menuCallback2(cocos2d::Ref* pSender);
 
-    std::wstring FromUtf8(const std::string& utf8string);
-    std::string ToUtf8(const std::wstring& widestring);
+    bool IsEnglish(std::string name);
 
     CREATE_FUNC(LoginScene);
 

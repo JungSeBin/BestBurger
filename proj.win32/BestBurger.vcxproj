@@ -261,6 +261,7 @@ xcopy /Y /Q "$(EngineRoot)external\websockets\prebuilt\win32\*.*" "$(OutDir)"</C
     <ClCompile Include="..\Classes\InputBox.cpp" />
     <ClCompile Include="..\Classes\LoginScene.cpp" />
     <ClCompile Include="..\Classes\SauceLayer.cpp" />
+    <ClCompile Include="..\Classes\SelectBurgerScene.cpp" />
     <ClCompile Include="..\Classes\SelectPreferenceScene.cpp" />
     <ClCompile Include="..\Classes\TasteLayer.cpp" />
     <ClCompile Include="main.cpp" />
@@ -274,6 +275,7 @@ xcopy /Y /Q "$(EngineRoot)external\websockets\prebuilt\win32\*.*" "$(OutDir)"</C
     <ClInclude Include="..\Classes\InputBox.h" />
     <ClInclude Include="..\Classes\LoginScene.h" />
     <ClInclude Include="..\Classes\SauceLayer.h" />
+    <ClInclude Include="..\Classes\SelectBurgerScene.h" />
     <ClInclude Include="..\Classes\SelectPreferenceScene.h" />
     <ClInclude Include="..\Classes\TasteLayer.h" />
     <ClInclude Include="main.h" />

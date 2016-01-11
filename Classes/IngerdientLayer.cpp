@@ -18,7 +18,7 @@ bool IngredientLayer::init()
     auto label = Label::createWithSystemFont("싫어하는 재료를 선택해주십시오.", "NanumGothic.ttf", 50);
     label->setAnchorPoint(Vec2::ZERO);
     label->setHorizontalAlignment(TextHAlignment::CENTER);
-    label->setPosition(Vec2(0.0f, 580.0f));
+    label->setPosition(Vec2(0.0f, 50.0f));
     label->setColor(Color3B::BLACK);
     this->addChild(label, 0, "TableLabel");
 
@@ -89,24 +89,26 @@ void IngredientLayer::menuCallback(cocos2d::Object* sender)
 
     if (index == selected)
     {
-        _selectedIDVec.push_back(item->getTag());
+        _SelectedIDVec.push_back(item->getTag());
     }
     else if (index == unSelected)
     {
-        auto selectedID = std::find(_selectedIDVec.begin(), _selectedIDVec.end(), id);
-        if (selectedID != _selectedIDVec.end())
+        auto selectedID = std::find(_SelectedIDVec.begin(), _SelectedIDVec.end(), id);
+        if (selectedID != _SelectedIDVec.end())
         {
-            _selectedIDVec.erase(selectedID);
+            _SelectedIDVec.erase(selectedID);
         }
     }
 }
 
 void IngredientLayer::InsertDataToDB()
 {
-    std::wstring wstr = L"INSERT INTO burgeringredient VALUES(";
-    for (auto& ingredientID : _selectedIDVec)
+    int userID = DBManager::getInstance().GetUserID();
+    std::wstring wstr;
+    for (auto& ingredientID : _SelectedIDVec)
     {
-        wstr += std::to_wstring(DBManager::getInstance().GetUserID()) + L",";
+        wstr = L"INSERT INTO dislikeingredient VALUES(";
+        wstr += std::to_wstring(userID) + L",";
         wstr += std::to_wstring(ingredientID) + L")";
         DBManager::getInstance().Excute((SQLWCHAR*)wstr.c_str());
     }

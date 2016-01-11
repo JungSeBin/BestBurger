@@ -97,3 +97,16 @@ void TasteLayer::menuCallback(cocos2d::Object* sender)
         }
     }
 }
+
+void TasteLayer::InsertDataToDB()
+{
+    int userID = DBManager::getInstance().GetUserID();
+    std::wstring wstr;
+    for (auto& tasteID : _SelectedIDVec)
+    {
+        wstr = L"INSERT INTO disliketaste VALUES(";
+        wstr += std::to_wstring(userID) + L",";
+        wstr += std::to_wstring(tasteID) + L")";
+        DBManager::getInstance().Excute((SQLWCHAR*)wstr.c_str());
+    }
+}

@@ -13,7 +13,7 @@ public:
 
     void PrintSauces();
     void menuCallback(cocos2d::Object* sender);
-
+    void InsertDataToDB();
 private:
     std::vector<int> _SelectedIDVec;
 };

@@ -13,7 +13,8 @@ enum TableType
     TABLE_BURGER,
     TABLE_INGREDIENT,
     TABLE_SAUCE,
-    TABLE_TASTE
+    TABLE_TASTE,
+    TABLE_SELECTEDBURGER
 };
 
 typedef std::map<int, SQLWCHAR*> DBMapType;
@@ -41,10 +42,14 @@ public:
     void        GetDataFromDB();
     SQLRETURN   GetDataFromTable(TableType tbType);
     void        InsertUserNameToDB(std::wstring name);
-    void        SelectUserIDFromDB();;
+    void        SelectUserIDFromDB();
     int         GetUserID(){ return _UserID; }
+    void        SelectBurgerByUserInfo();
+    void        InsertUserPreference();
+    void        test();
 
-    const DBMapType& GetTableMap(TableType tbType) const;
+    const       DBMapType& GetTableMap(TableType tbType) const;
+    const       std::wstring& GetName() { return _UserName; }
 
 private:
 
@@ -60,7 +65,8 @@ private:
     DBMapType _IngredientMap;
     DBMapType _SauceMap;
     DBMapType _TasteMap;
+    DBMapType _SelectedBurgerMap;
 
-    unsigned int             _UserID;
+    int    _UserID;
     std::wstring    _UserName;
 };
